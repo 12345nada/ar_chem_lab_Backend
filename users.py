@@ -1,15 +1,10 @@
 from passlib.context import CryptContext
-from datetime import datetime, timedelta
 from typing import Dict
 
-# =========================
 # Password Hashing
-# =========================
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# =========================
-# Fake DB (Dynamic)
-# =========================
+# Fake DB
 fake_users_db: Dict[str, dict] = {
     "nada": {
         "username": "nada",
@@ -18,17 +13,13 @@ fake_users_db: Dict[str, dict] = {
     }
 }
 
-# =========================
 # Security Settings
-# =========================
 SECRET_KEY = "super-secret-key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
-# =========================
 # Helper Functions
-# =========================
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
