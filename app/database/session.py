@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "sqlite:///./test.db"
+# MySQL connection (XAMPP)
+DATABASE_URL = "mysql+mysqlconnector://root:@127.0.0.1:3306/testdb"
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False}
+    echo=True  # optional, logs SQL queries
 )
 
 SessionLocal = sessionmaker(
@@ -15,7 +16,6 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
-
 
 def get_db():
     db = SessionLocal()
