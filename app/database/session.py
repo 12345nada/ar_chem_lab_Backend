@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # MySQL connection (XAMPP)
-DATABASE_URL = "mysql+mysqlconnector://root:@127.0.0.1:3306/testdb"
+DATABASE_URL = "mysql+mysqlconnector://root:@127.0.0.1:3306/test1"
 
 engine = create_engine(
     DATABASE_URL,

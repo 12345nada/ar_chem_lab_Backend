@@ -36,8 +36,8 @@ def login(data: LoginModel, db: Session = Depends(get_db)):
 
     return {
         "access_token": create_access_token({"sub": user.username}),
-        "refresh_token": create_refresh_token({"sub": user.username}),
-        "token_type": "bearer"
+      #  "refresh_token": create_refresh_token({"sub": user.username}),
+       # "token_type": "bearer"
     }
 
 
@@ -56,8 +56,8 @@ def refresh_token(data: RefreshTokenModel, db: Session = Depends(get_db)):
 
         return {
             "access_token": create_access_token({"sub": username}),
-            "refresh_token": create_refresh_token({"sub": username}),
-            "token_type": "bearer"
+         #   "refresh_token": create_refresh_token({"sub": username}),
+          #  "token_type": "bearer"
         }
 
     except JWTError:
