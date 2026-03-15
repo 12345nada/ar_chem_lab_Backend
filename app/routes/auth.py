@@ -30,16 +30,30 @@ def register(user: RegisterModel, db: Session = Depends(get_db)):
 
     return {"message": "User registered successfully"}
 
+#@router.post("/login")
+#def login(data: LoginModel, db: Session = Depends(get_db)):
+ #   user = authenticate_user(db, data.username, data.password)
+
+  #  if not user:
+   #     raise HTTPException(status_code=401, detail="Invalid credentials")
+
+   # return {
+    #    "access_token": create_access_token({"sub": user.username}),
+      #  "refresh_token": create_refresh_token({"sub": user.username}),
+       # "token_type": "bearer"
+   # }
+
 @router.post("/login")
 def login(data: LoginModel, db: Session = Depends(get_db)):
-    user = authenticate_user(db, data.username, data.password)
+
+    user = db.query(User).filter(User.email == data.email).first()
 
     if not user:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        raise HTTPException(status_code=401, detail="Invalid email")
 
     return {
-        "access_token": create_access_token({"sub": user.username}),
-      #  "refresh_token": create_refresh_token({"sub": user.username}),
+        "access_token": create_access_token({"sub": user.email}),
+       # "refresh_token": create_refresh_token({"sub": user.email}),
        # "token_type": "bearer"
     }
 
@@ -85,7 +99,7 @@ def forgot_password(data: ForgotPasswordModel, db: Session = Depends(get_db)):
 
     return {
         "message": "Reset code sent",
-        "code": code
+       # "code": code
     }
 
 @router.post("/verify-reset-code")

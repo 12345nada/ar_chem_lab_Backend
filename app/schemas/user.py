@@ -8,7 +8,8 @@ class RegisterModel(BaseModel):
 
 
 class LoginModel(BaseModel):
-    username: str
+    #username: str
+    email: str
     password: str
 
 
