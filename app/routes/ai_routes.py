@@ -8,6 +8,7 @@ from app.services.ai_service import (
     forward_predict, check_ai_alive
 )
 from app.core.config import settings
+from app.utils.display_meta import enrich_payload
 
 router = APIRouter()
 
@@ -44,7 +45,10 @@ def predict(req: PredictRequest):
     if not resp.ok:
         raise HTTPException(status_code=502, detail="AI error")
 
-    return resp.json()
+    payload = resp.json()
+    enrich_payload(payload)                          
+
+    return payload
 
 
 @router.get("/health")
