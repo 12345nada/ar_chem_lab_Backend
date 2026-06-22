@@ -115,13 +115,13 @@ def refresh_token(data: RefreshTokenModel, db: Session = Depends(get_db)):
 
 
 
-@router.get("/profile")
-def profile(current_user: User = Depends(get_current_user)):
-    return {
-        "username": current_user.username,
-        "email": current_user.email,
-        "message": "Authenticated successfully"
-    }
+#@router.get("/profile")
+#def profile(current_user: User = Depends(get_current_user)):
+ #   return {
+  #      "username": current_user.username,
+   #     "email": current_user.email,
+    #    "message": "Authenticated successfully"
+    #}
 
 
 
@@ -168,9 +168,12 @@ def update_level(data: UpdateLevelModel, db: Session = Depends(get_db)):
     return {"message": "Level updated successfully", "level": user.level}
 
 
-@router.get("/user-data/{username}", response_model=UserDataResponse)
-def get_user_data(username: str, db: Session = Depends(get_db)):
-    user = search_user_full_data(db, username)
+@router.get("/user-data", response_model=UserDataResponse)
+def get_user_data(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user = search_user_full_data(db, current_user.username)
 
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
