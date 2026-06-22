@@ -1,6 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
+from app.schemas.user import UpdateLevelModel, UserDataResponse
+from app.crud.user import set_user_level, search_user_full_data
+
 
 from app.schemas.user import (
     RegisterModel, VerifyEmailModel, LoginModel,
@@ -152,3 +155,24 @@ def reset_password(data: ResetPasswordModel, db: Session = Depends(get_db)):
     OTPService.clear(db, user)
 
     return {"message": "Password reset successfully"}
+
+@router.put("/update-level")
+def update_level(data: UpdateLevelModel, db: Session = Depends(get_db)):
+    user = get_user(db, data.username)
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    set_user_level(db, user, data.level.value)
+
+    return {"message": "Level updated successfully", "level": user.level}
+
+
+@router.get("/user-data/{username}", response_model=UserDataResponse)
+def get_user_data(username: str, db: Session = Depends(get_db)):
+    user = search_user_full_data(db, username)
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return user
